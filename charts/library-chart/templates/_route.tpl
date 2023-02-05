@@ -23,7 +23,11 @@ haproxy.router.openshift.io/ip_whitelist: {{ .Values.security.allowlist.ip }}
 {{- define "library-chart.route" -}}
 {{- if .Values.route.enabled -}}
 {{- $fullName := include "library-chart.fullname" . -}}
+{{- if .Values.networking.service.port "=80" -}}
+{{- $svcPort := "http" -}}
+{{- else }}
 {{- $svcPort := .Values.networking.service.port -}}
+{{- end }}
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
